@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html, body {
+    @apply bg-surface-0 text-gray-200 font-sans;
+    scroll-behavior: smooth;
+  }
+
+  ::-webkit-scrollbar        { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { @apply bg-surface-1; }
+  ::-webkit-scrollbar-thumb  { @apply bg-surface-3 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-rh-gray; }
+}
+
+@layer components {
+  .code-inline {
+    @apply font-mono text-sm bg-surface-2 text-token-string px-1.5 py-0.5 rounded border border-border;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold text-white mb-2 flex items-center gap-2;
+  }
+
+  .section-body {
+    @apply text-gray-300 leading-relaxed text-sm;
+  }
+
+  .pill {
+    @apply inline-block px-2 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide;
+  }
+  .pill-red    { @apply pill bg-red-900/60 text-red-300 border border-red-800; }
+  .pill-blue   { @apply pill bg-blue-900/60 text-blue-300 border border-blue-800; }
+  .pill-yellow { @apply pill bg-yellow-900/60 text-yellow-300 border border-yellow-800; }
+  .pill-green  { @apply pill bg-green-900/60 text-green-300 border border-green-800; }
+}
+
+/* Flow diagram arrows */
+.flow-arrow::after {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 28px;
+  background: #EE0000;
+  margin: 0 auto;
+}
