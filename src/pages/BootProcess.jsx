@@ -403,7 +403,7 @@ dracut -f -v 2>&1 | head -50
 
 # Rebuild initramfs for ALL installed kernels at once
 for kv in $(ls /lib/modules/); do
-  dracut -f /boot/initramfs-${kv}.img ${kv}
+  dracut -f /boot/initramfs-\${kv}.img \${kv}
 done`}
         />
 
