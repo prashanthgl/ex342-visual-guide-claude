@@ -1,9 +1,9 @@
 {
-  "name": "ex342-visual-guide",
+  "name": "ex342-visual-guide-claude",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://prashanthgl.github.io/ex442-visual-guide",
+  "homepage": "https://prashanthgl.github.io/ex342-visual-guide-claude",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

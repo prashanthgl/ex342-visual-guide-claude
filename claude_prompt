@@ -1,0 +1,279 @@
+You are a Red Hat expert and senior React developer. Build a stunning, comprehensive, 
+interactive exam prep guide for the **[CERT_CODE] — [CERT_FULL_NAME]** certification,
+using the exact tech stack and architecture below. Deploy it to GitHub Pages.
+
+GitHub username: [YOUR_GITHUB_USERNAME]
+Repo name: [YOUR_REPO_NAME]
+Live URL will be: https://[YOUR_GITHUB_USERNAME].github.io/[YOUR_REPO_NAME]/
+
+The git repo already exists locally at the working directory with a remote already
+configured. Do not run git init or git remote add.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TECH STACK (exact versions — do not deviate)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Vite 6 + @vitejs/plugin-react
+- React 18 + react-dom
+- react-router-dom v6  →  use HashRouter (NOT BrowserRouter — GitHub Pages
+  has no server-side routing, the hash keeps routing in the browser)
+- Tailwind CSS v3 + postcss + autoprefixer
+- react-syntax-highlighter (Prism)
+- lucide-react
+- gh-pages (devDependency — for npm run deploy)
+
+package.json scripts:
+  "dev":       "vite"
+  "build":     "vite build"
+  "preview":   "vite preview"
+  "predeploy": "npm run build"
+  "deploy":    "gh-pages -d dist"
+
+"homepage": "https://[YOUR_GITHUB_USERNAME].github.io/[YOUR_REPO_NAME]"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VITE CONFIG  (vite.config.js)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  base: '/[YOUR_REPO_NAME]/',
+  build: {
+    chunkSizeWarningLimit: 700,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react':  ['react', 'react-dom', 'react-router-dom'],
+          'vendor-ui':     ['lucide-react'],
+          'vendor-syntax': ['react-syntax-highlighter'],
+          // Split pages into groups of 3 to avoid >500 kB chunks
+          'pages-group-1': ['./src/pages/Home', './src/pages/[Page2]', './src/pages/[Page3]'],
+          'pages-group-2': ['./src/pages/[Page4]', './src/pages/[Page5]', './src/pages/[Page6]'],
+          // ... continue grouping all pages
+        },
+      },
+    },
+  },
+})
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESIGN SYSTEM  (tailwind.config.js)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Dark theme, Red Hat brand colors:
+
+colors:
+  rh.red:    '#EE0000'
+  rh.dark:   '#151515'
+  rh.darker: '#0d0d0d'
+  rh.gray:   '#3C3F42'
+  rh.light:  '#f5f5f5'
+  surface.0: '#0d1117'   ← page background
+  surface.1: '#161b22'   ← sidebar / cards
+  surface.2: '#1c2128'   ← code blocks / table headers
+  surface.3: '#21262d'   ← hover states
+  border:    '#30363d'
+  token.keyword:  '#ff7b72'
+  token.string:   '#a5d6ff'
+  token.comment:  '#8b949e'
+  token.fn:       '#d2a8ff'
+  token.number:   '#79c0ff'
+  token.operator: '#ffa657'
+
+fonts:
+  mono: JetBrains Mono, Fira Code, Consolas, monospace
+  sans: Inter, system-ui, sans-serif
+
+Load both fonts from Google Fonts in index.html.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PROJECT FILE STRUCTURE (create every file listed)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[YOUR_REPO_NAME]/
+├── public/favicon.svg          ← simple SVG with cert code in red on dark bg
+├── index.html                  ← loads fonts, mounts <div id="root">
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+├── postcss.config.js
+├── .gitignore                  ← include: node_modules, dist, .DS_Store, .claude/
+├── README.md
+└── src/
+    ├── main.jsx                ← ReactDOM.createRoot → StrictMode → App
+    ├── App.jsx                 ← HashRouter + Routes. One <Route> per topic page.
+    ├── index.css               ← @tailwind base/components/utilities + scrollbar styles
+    │                              + .code-inline, .section-title, .section-body, .pill-*
+    ├── components/
+    │   ├── Layout.jsx          ← fixed sidebar + scrollable main; mobile hamburger toggle
+    │   ├── Sidebar.jsx         ← NavLink list; active state highlighted in rh-red
+    │   ├── CodeBlock.jsx       ← react-syntax-highlighter/Prism + copy button + title bar
+    │   ├── InfoBox.jsx         ← info / tip / warning / danger / exam variants
+    │   ├── FlowDiagram.jsx     ← vertical timeline (FlowDiagram default export)
+    │   │                          + horizontal step chain (HorizontalFlow named export)
+    │   ├── CommandTable.jsx    ← striped table: cmd | desc | example columns
+    │   └── PageHeader.jsx      ← large title + subtitle + tag pills + lucide icon
+    └── pages/
+        ├── Home.jsx            ← dashboard: exam overview, topic grid, Linux layer visual
+        └── [one file per exam topic]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SHARED COMPONENT SPECS (implement exactly as described)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CodeBlock  props: { code, language='bash', title, showLineNumbers=false }
+  - Title bar: shows language/title label on left, Copy button on right
+  - Copy button toggles to a green checkmark for 2 seconds after click
+  - Uses a hand-crafted Prism theme matching the token.* colors above
+  - *** CRITICAL BUG TO AVOID ***
+    All code content is passed as JS template literals. Any shell variable
+    like ${varname} WILL be evaluated as JavaScript and throw ReferenceError
+    if the variable is undeclared, blanking the entire page.
+    ALWAYS escape shell variables: write \${varname} not ${varname}.
+    Shell command substitution $() is safe — only ${} needs escaping.
+
+InfoBox  props: { type, title, children }
+  types: info(blue) | tip(green) | warning(yellow) | danger(red) | exam(rh-red)
+  Each type has a matching lucide icon and border/background tint.
+
+FlowDiagram  props: { title, steps: [{label, sub, color, icon}] }
+  - Renders a vertical timeline with a gradient red→gray line on the left
+  - Each step is a colored card (colors: default/red/blue/green/yellow/purple)
+
+HorizontalFlow  props: { steps: [{label, sub, color}] }
+  - Renders left-to-right boxes connected by arrow dividers
+  - Overflow-x scrollable for small screens
+
+CommandTable  props: { title, rows: [{cmd, desc, note}] }
+  - Striped rows, monospace red text for the cmd column
+  - Horizontally scrollable
+
+PageHeader  props: { icon, title, subtitle, tags[] }
+  - Large H1, subtitle paragraph, colored pill tags
+  - Icon displayed in a rh-red tinted box on the left
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ROUTING (App.jsx)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use HashRouter so URLs look like https://host/#/topic instead of /topic.
+This is mandatory for GitHub Pages — do not use BrowserRouter.
+
+<HashRouter>
+  <Routes>
+    <Route path="/" element={<Layout />}>
+      <Route index element={<Home />} />
+      <Route path="[topic1]" element={<Topic1Page />} />
+      ...
+    </Route>
+  </Routes>
+</HashRouter>
+
+Layout uses <Outlet /> from react-router-dom to render the matched child.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EVERY CONTENT PAGE MUST INCLUDE ALL OF:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. <PageHeader> with relevant lucide icon, title, subtitle, 4–6 tag pills
+2. A visual architecture/flow overview using <HorizontalFlow> or <FlowDiagram>
+3. Minimum 3 <CodeBlock> examples with realistic, runnable commands
+4. Minimum 1 <CommandTable> with ≥10 rows covering every relevant command
+5. Minimum 3 <InfoBox> blocks — mix of tip, warning, and exam types
+6. An investigation/troubleshooting workflow as a <FlowDiagram> (7–10 steps)
+7. Thorough prose explaining concepts before each code example
+8. Linux internals context where relevant (kernel subsystem, /proc paths, etc.)
+9. Common failure scenarios with diagnosis steps
+10. section-title + section-body CSS classes on every h2/p pair
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HOME PAGE (src/pages/Home.jsx)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Include:
+- Exam metadata grid: duration, format (hands-on), RHEL version, objective
+- Topic card grid (one card per route) using <Link> from react-router-dom,
+  each with lucide icon, title, one-sentence description, colored tag pills,
+  and a hover lift/shadow transition
+- Linux system layer diagram: 5 stacked divs (User Space → Libraries →
+  System Calls → Kernel → Hardware) with arrows between each layer
+- "How to use this guide" numbered list
+- Study plan InfoBox (type="tip") + exam day tips InfoBox (type="exam")
+  + common pitfalls InfoBox (type="warning")
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DEPLOYMENT — npm gh-pages package (NOT GitHub Actions)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Do NOT create any .github/workflows/ files.
+
+Deployment is done by the developer running: npm run deploy
+
+This works because:
+  predeploy → runs npm run build  → outputs to dist/
+  deploy    → gh-pages -d dist   → pushes dist/ to the gh-pages branch
+
+GitHub Pages is configured once to serve from the gh-pages branch.
+After that first setup, every npm run deploy updates the site automatically
+with no settings changes needed.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+README.md — must cover all of:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- One-line description + live URL badge
+- Table of all chapters with topic summary per row
+- Tech stack table (tool | purpose)
+- Local dev setup: git clone → npm install → npm run dev
+- Deployment instructions: npm run deploy (explain what it does step by step)
+- First-time GitHub Pages setup note (Settings → Pages → gh-pages branch)
+- Full project file tree with one-line comments on every file
+- Key React concepts used in this project (table: concept | where used)
+- Available scripts table
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXECUTION STRATEGY — run agents in parallel
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Use background agents to write page files in parallel (3–4 pages per agent).
+Each agent receives the full component API spec and the critical ${} escaping
+rule above. The main thread handles: package.json, vite.config.js,
+tailwind.config.js, postcss.config.js, index.html, .gitignore, src/main.jsx,
+src/App.jsx, src/index.css, all 7 components, and README.md.
+
+Wait for all agents to finish, then run: npm run build
+If the build succeeds, commit ALL files with:
+  git add <specific files — never git add -A to avoid committing .claude/>
+  git commit -m "Initial release: [CERT_CODE] Visual Guide"
+  git push origin main
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+KNOWN BUGS — CHECK BEFORE COMMITTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After all pages are written, before building, run:
+  grep -rn '\${[a-zA-Z_][a-zA-Z0-9_]*}' src/pages/
+
+Any match inside a code={`...`} prop is a bug. Fix by escaping \${varname}.
+Matches inside className={`...`} or style={`...`} are intentional — leave them.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+WHAT TO FILL IN BEFORE USING THIS PROMPT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Replace every [PLACEHOLDER] at the top:
+
+  [CERT_CODE]            e.g. EX294, EX380, EX362, EX447
+  [CERT_FULL_NAME]       e.g. "Red Hat Certified Engineer — Ansible Automation"
+  [YOUR_GITHUB_USERNAME] e.g. prashanthgl
+  [YOUR_REPO_NAME]       e.g. ex294-visual-guide
+
+Then describe the exam topics below, listing every domain from the official
+Red Hat exam objectives page for [CERT_CODE]. The more detail you provide
+about the topics, the more accurate the content will be.
+
+EXAM TOPICS FOR [CERT_CODE]:
+[paste exam objectives here, or list them yourself]

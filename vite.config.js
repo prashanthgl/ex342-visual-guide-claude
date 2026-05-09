@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/ex442-visual-guide/',
+  base: '/ex342-visual-guide-claude/',
   build: {
     chunkSizeWarningLimit: 700,
     rollupOptions: {

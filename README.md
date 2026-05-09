@@ -2,7 +2,7 @@
 
 > An interactive, visually-rich exam prep guide for the **Red Hat Certified Specialist in Linux Diagnostics and Troubleshooting (EX342)** exam, built with React and deployed to GitHub Pages.
 
-**Live site:** [https://prashanthgl.github.io/ex442-visual-guide/](https://prashanthgl.github.io/ex442-visual-guide/)
+**Live site:** [https://prashanthgl.github.io/ex342-visual-guide-claude/](https://prashanthgl.github.io/ex342-visual-guide-claude/)
 
 ---
 
@@ -50,8 +50,8 @@ Each chapter includes:
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/prashanthgl/ex442-visual-guide.git
-cd ex442-visual-guide
+git clone https://github.com/prashanthgl/ex342-visual-guide-claude.git
+cd ex342-visual-guide-claude
 
 # 2. Install dependencies
 npm install
@@ -60,7 +60,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:5173/ex442-visual-guide/](http://localhost:5173/ex442-visual-guide/) in your browser.
+Open [http://localhost:5173/ex342-visual-guide-claude/](http://localhost:5173/ex342-visual-guide-claude/) in your browser.
 
 ---
 
@@ -77,7 +77,7 @@ npm run deploy
 That single command:
 1. Runs `npm run build` (via the `predeploy` hook in `package.json`)
 2. Pushes the `dist/` folder to the `gh-pages` branch on GitHub
-3. GitHub Pages publishes it at `https://prashanthgl.github.io/ex442-visual-guide/`
+3. GitHub Pages publishes it at `https://prashanthgl.github.io/ex342-visual-guide-claude/`
 
 > **First-time setup only:** Go to your repo → **Settings → Pages → Source** → select
 > **`gh-pages` branch** and save. After that, every `npm run deploy` updates the site
@@ -88,7 +88,7 @@ That single command:
 ## Project Structure
 
 ```
-ex442-visual-guide/
+ex342-visual-guide-claude/
 ├── public/
 │   └── favicon.svg
 ├── src/
